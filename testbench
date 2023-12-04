@@ -1,0 +1,51 @@
+module fourbit_full_adder_tb ;
+  reg [3:0] a,b,n_s	;
+  reg cin,n_c		;
+  wire [3:0] s		;
+  wire c			;
+  
+  fourbit_full_adder dut
+(
+  .i_a(a),
+  .i_b(b),
+  .i_cin(cin),
+  .o_s(s),
+  .o_c(c)
+);
+  
+  initial begin
+    $dumpfile("dump.vcd"); $dumpvars;
+    repeat(5)
+      begin
+        stimulus();                               
+         if (n_s == s && n_c == c) 
+                                            
+            $display("a = %b, b = %b, cin = %b, sum = %b, carry = %b, new_sum = %b, new_carry = %b, Test case Passed", a, b, cin, s, c, n_s, n_c);     
+         else
+            $display("a = %b, b = %b, cin = %b, sum = %b, carry = %b, new_sum = %b, new_carry = %b, Test case Failed", a, b, cin, s, c, n_s, n_c);
+      
+      end
+    $finish;
+      end
+  
+  task stimulus     ;    //task for inputs and sum & carry calculation
+   reg [3:0]A, B  ;    //register declaration for inputs
+   reg Cin        ;    //register declaration for inputs
+
+   begin 
+   A   = $random;   //random input
+   B   = $random;   //random input
+   Cin = $random;
+
+    
+   a   = A;         //mapping input from task to register 
+   b   = B;         //mapping input from task to register 
+   cin = Cin;       //mapping input from task to register 
+    
+   {n_c, n_s} = A + B + Cin;#5; //carry and sum by addition
+   
+   end
+    
+endtask     
+  
+endmodule   
