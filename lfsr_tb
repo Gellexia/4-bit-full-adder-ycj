@@ -1,0 +1,47 @@
+// Code your testbench here
+// or browse Examples
+module lfsr_tb;
+  
+  reg reset, clk;
+  wire [3:0] data;
+  reg[3:0] t_data;
+  wire t_next_bit;
+  
+  lfsr dut(
+    .reset(reset),
+    .clk(clk),
+    .data(data)
+  );
+  
+  initial begin
+  	clk = 0;
+    forever #5 clk =~ clk;
+    #100 $finish;
+  end
+  
+  initial begin
+    reset = 1;
+    #20 reset = 0;
+    #100 $finish;
+  end
+  
+  assign t_next_bit = t_data[1] ^ t_data[0];
+  
+  always @ (posedge clk)
+    begin
+      if(reset)
+        t_data = 1;
+      else
+        t_data <= {t_next_bit, t_data[3:1]};
+      
+      if (t_data == data )
+        $display("t_data = %b, data = %b, Testcase Pass", t_data, data);
+      else 
+         $display("t_data = %b, data = %b, Testcase Fail", t_data, data);
+   end
+  
+endmodule
+  
+  
+  
+  
