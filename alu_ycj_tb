@@ -1,0 +1,62 @@
+module alu_tb		;
+  reg[3:0]a, b		;
+  reg[1:0]select	;
+  wire [3:0] out	;
+  wire zero, carry, sign, parity, overflow	;
+  reg [3:0] t_out	;
+  string op 		;
+  
+  alu dut(
+    	 .a(a)              ,  
+         .b(b)              ,  
+         .select(select)    ,  
+         .zero(zero)        ,  
+         .carry(carry)      ,  
+         .sign(sign)        ,  
+         .parity(parity)    ,  
+         .overflow(overflow),  
+         .out(out)  
+  )	;
+  
+  initial begin
+    repeat (100)
+      begin
+        stimulus();#5;
+        
+        if (t_out == out)
+           $display( "%b %s %b = %b t_out = %b, zero = %b, carry = %b, sign = %b, parity = %b, overflow = %b, Testcase Passed",a,op,b,out,t_out, zero, carry, sign, parity, overflow);
+        
+        else
+         $display( "%b %s %b = %b t_out = %b, zero = %b, carry = %b, sign = %b, parity = %b, overflow = %b, Testcase Passed",a,op,b,out,t_out, zero, carry, sign, parity, overflow);
+        
+      end
+  end
+        
+        
+  task stimulus			;
+    reg [3:0] A, B		;
+    reg [1:0] S			;
+    
+    begin
+      A = $random		;
+      B = $random		;
+      S = $random		;
+      
+      case (S)
+        0 : op = "+"	;
+        1 : op = "-"	;
+        2 : op = "*"	;
+        3 : op = "/"	;
+      endcase
+      
+      a = A				;
+      b = B				;
+      select = S		;
+      
+    end
+  endtask
+        
+ endmodule
+        
+      
+                  
