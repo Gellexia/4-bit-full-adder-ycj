@@ -1,0 +1,26 @@
+module clkdivider_tb;
+  reg clk, reset;
+  wire out_clk;
+
+  clkdivider #(8) dut(
+    .clk(clk),
+    .reset(reset),
+    .out_clk(out_clk)
+  );
+
+  initial begin
+    $dumpfile("dump.vcd"); $dumpvars;
+    clk = 1'b0;
+    reset = 1'b1;
+    stimulus;
+    #800 $finish;
+  end
+
+  task stimulus;
+    repeat(120) begin
+      #3 clk = ~clk;
+      #10 reset = 1'b0;
+    end
+  endtask
+
+endmodule
