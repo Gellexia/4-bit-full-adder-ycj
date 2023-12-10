@@ -1,0 +1,31 @@
+// Code your design here
+// Code your design here
+module mux_condt(
+                in0      , //input 
+                in1      , //input
+                in2      , //input
+                in3      , //input
+                select   , //select line as input
+                out        //output
+                )        ;
+
+//port declaration
+
+input [1:0]in0, in1, in2, in3  ;
+input [1:0]select              ;
+output reg [1:0]out            ;
+
+  always @ (select, in0, in1, in2, in3)
+
+                     //mapping Sl to select
+      begin
+         case (select)
+            0  :  out = in0 ;      
+            1  :  out = in1 ;
+            2  :  out = in2 ;
+            3  :  out = in3 ;
+  	      endcase
+      end
+            
+  
+endmodule // Mux
